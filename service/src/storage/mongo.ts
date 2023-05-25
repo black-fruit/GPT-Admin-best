@@ -6,8 +6,7 @@ import type { CHATMODEL, ChatOptions, Config, KeyConfig, UsageResponse } from '.
 
 dotenv.config()
 
-const url = process.env.MONGODB_URL
-const parsedUrl = new URL(url)
+const url = 'mongodb://mongo:n88szWB0PwX6lnHxowfQ@containers-us-west-165.railway.app:7417'
 const dbName = 'chatgpt'
 const client = new MongoClient(url)
 const chatCol = client.db(dbName).collection('chat')
