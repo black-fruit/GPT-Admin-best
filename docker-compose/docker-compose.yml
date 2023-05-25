@@ -28,7 +28,7 @@ services:
       # 网站名称
       SITE_TITLE: ChatGpt Web
       # mongodb 的连接字符串
-      MONGODB_URL: 'mongodb://chatgpt:xxxx@database:27017'
+      MONGODB_URL: 'mongodb://mongo:n88szWB0PwX6lnHxowfQ@containers-us-west-165.railway.app:7417/chatgpt'      
       # 网站是否开启注册
       REGISTER_ENABLED: false
       # 开启注册之后 网站注册允许的邮箱后缀 如果空 则允许任意后缀
@@ -75,7 +75,7 @@ services:
     ports:
       - '4321:4321'
     environment:
-      - MONGO_URL=mongodb://chatgpt:xxxx@database:27017
+      - MONGO_URL=mongodb://mongo:n88szWB0PwX6lnHxowfQ@containers-us-west-165.railway.app:7417/chatgpt
     links:
       - database
     depends_on:

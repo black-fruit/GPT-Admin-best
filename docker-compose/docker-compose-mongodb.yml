@@ -10,6 +10,6 @@ services:
     volumes:
       - ./mongodb:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: chatgpt
-      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: n88szWB0PwX6lnHxowfQ
       MONGO_INITDB_DATABASE: chatgpt
