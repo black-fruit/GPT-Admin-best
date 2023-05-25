@@ -1,5 +1,5 @@
 import type { ChatMessage } from 'chatgpt'
-import type fetch from 'node-fetch'
+import type { CHATMODEL, KeyConfig } from 'src/storage/model'
 
 export interface RequestOptions {
   message: string
@@ -8,12 +8,10 @@ export interface RequestOptions {
   systemMessage?: string
   temperature?: number
   top_p?: number
+  chatModel: CHATMODEL
+  key: KeyConfig
 }
 
-export interface SetProxyOptions {
-  fetch?: typeof fetch
-}
-
-export interface UsageResponse {
+export interface BalanceResponse {
   total_usage: number
 }

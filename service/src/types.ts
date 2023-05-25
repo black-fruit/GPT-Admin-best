@@ -1,6 +1,9 @@
 import type { FetchFn } from 'chatgpt'
 
 export interface RequestProps {
+  roomId: number
+  uuid: number
+  regenerate: boolean
   prompt: string
   options?: ChatContext
   systemMessage: string
@@ -23,12 +26,32 @@ export interface ChatGPTUnofficialProxyAPIOptions {
 }
 
 export interface ModelConfig {
-  apiModel?: ApiModel
+  apiModel?: APIMODEL
   reverseProxy?: string
   timeoutMs?: number
   socksProxy?: string
+  socksAuth?: string
   httpsProxy?: string
-  usage?: string
+  allowRegister?: boolean
+  balance?: string
+  accessTokenExpiredTime?: string
 }
 
-export type ApiModel = 'ChatGPTAPI' | 'ChatGPTUnofficialProxyAPI' | undefined
+export type APIMODEL = 'ChatGPTAPI' | 'ChatGPTUnofficialProxyAPI' | undefined
+
+export interface JWT {
+  'https://api.openai.com/profile': {
+    'email': string
+    'email_verified': boolean
+  }
+  'https://api.openai.com/auth': {
+    'user_id': string
+  }
+  'iss': string
+  'sub': string
+  'aud': []
+  'iat': number
+  'exp': number
+  'azp': string
+  'scope': string
+}

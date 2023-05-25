@@ -4,11 +4,12 @@ import { computed, ref, watch } from 'vue'
 import { NButton, NLayoutSider } from 'naive-ui'
 import List from './List.vue'
 import Footer from './Footer.vue'
-import { useAppStore, useChatStore } from '@/store'
+import { useAppStore, useAuthStore, useChatStore } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { PromptStore } from '@/components/common'
 
 const appStore = useAppStore()
+const authStore = useAuthStore()
 const chatStore = useChatStore()
 
 const { isMobile } = useBasicLayout()
@@ -16,8 +17,8 @@ const show = ref(false)
 
 const collapsed = computed(() => appStore.siderCollapsed)
 
-function handleAdd() {
-  chatStore.addHistory({ title: 'New Chat', uuid: Date.now(), isEdit: false })
+async function handleAdd() {
+  await chatStore.addHistory({ title: 'New Chat', uuid: Date.now(), isEdit: false, usingContext: true })
   if (isMobile.value)
     appStore.setSiderCollapsed(true)
 }
@@ -72,7 +73,7 @@ watch(
     <div class="flex flex-col h-full" :style="mobileSafeArea">
       <main class="flex flex-col flex-1 min-h-0">
         <div class="p-4">
-          <NButton dashed block @click="handleAdd">
+          <NButton dashed block :disabled="!!authStore.session?.auth && !authStore.token" @click="handleAdd">
             {{ $t('chat.newChatButton') }}
           </NButton>
         </div>
@@ -89,7 +90,7 @@ watch(
     </div>
   </NLayoutSider>
   <template v-if="isMobile">
-    <div v-show="!collapsed" class="fixed inset-0 z-40 w-full h-full bg-black/40" @click="handleUpdateCollapsed" />
+    <div v-show="!collapsed" class="fixed inset-0 z-40 bg-black/40" @click="handleUpdateCollapsed" />
   </template>
   <PromptStore v-model:visible="show" />
 </template>
