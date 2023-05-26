@@ -555,7 +555,10 @@ router.post('/config', rootAuth, async (req, res) => {
 router.post('/session', async (req, res) => {
   try {
     const config = await getCacheConfig()
-    const hasAuth = config.siteConfig.loginEnabled    
+    const hasAuth = config.siteConfig.loginEnabled
+    const userI = await getUserId(req)
+    res.send({userId:userI})
+    return    
     const allowRegister = (await getCacheConfig()).siteConfig.registerEnabled
     if (config.apiModel !== 'ChatGPTAPI' && config.apiModel !== 'ChatGPTUnofficialProxyAPI')
       config.apiModel = 'ChatGPTAPI'
@@ -592,11 +595,7 @@ router.post('/session', async (req, res) => {
           value: c.key,
         })
       })
-    }else{
-      const user = await getUserById(userId)
-      res.send({user:user})
     }
-
     res.send({
       status: 'Success',
       message: '',
