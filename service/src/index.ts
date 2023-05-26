@@ -555,7 +555,9 @@ router.post('/config', rootAuth, async (req, res) => {
 router.post('/session', async (req, res) => {
   try {
     const config = await getCacheConfig()
+    console.log(config);
     const hasAuth = config.siteConfig.loginEnabled
+    
     const allowRegister = (await getCacheConfig()).siteConfig.registerEnabled
     if (config.apiModel !== 'ChatGPTAPI' && config.apiModel !== 'ChatGPTUnofficialProxyAPI')
       config.apiModel = 'ChatGPTAPI'
@@ -608,7 +610,7 @@ router.post('/session', async (req, res) => {
     })
   }
   catch (error) {
-    res.send({ status: 'Fail', message: error.message, data: '错误' })
+    res.send({ status: 'Fail', message: error.message, data: null })
   }
 })
 
