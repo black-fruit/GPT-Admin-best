@@ -554,8 +554,9 @@ router.post('/config', rootAuth, async (req, res) => {
 
 router.post('/session', async (req, res) => {
   try {
+    console.log('abcd');
     const config = await getCacheConfig()
-    console.log(config);
+    
     const hasAuth = config.siteConfig.loginEnabled  
     const allowRegister = (await getCacheConfig()).siteConfig.registerEnabled
     if (config.apiModel !== 'ChatGPTAPI' && config.apiModel !== 'ChatGPTUnofficialProxyAPI')
