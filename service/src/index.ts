@@ -618,7 +618,8 @@ router.post('/user-login', async (req, res) => {
       throw new Error('用户名或密码为空 | Username or password is empty')
 
     const user = await getUser(username)
-    console.log(user);
+    console.log('mm:',user.password);
+    console.log('md5:',md5(password));
     if (user == null || user.password !== md5(password))
       throw new Error('用户不存在或密码错误 | User does not exist or incorrect password.')
     if (user.status === Status.PreVerify)
