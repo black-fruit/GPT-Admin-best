@@ -565,11 +565,11 @@ router.post('/session', async (req, res) => {
       key: string
       value: string
     }[] = []
-    console.log('userId:',userId);
+    
     if (userId != null) {
       const user = await getUserById(userId)
       const keys = (await getCacheApiKeys()).filter(d => hasAnyRole(d.userRoles, user.roles))
-
+      console.log('keys:',keys);
       const count: { key: string; count: number }[] = []
       chatModelOptions.forEach((chatModel) => {
         keys.forEach((key) => {
