@@ -36,7 +36,7 @@ services:
       # 开启注册之后 密码加密的盐
       PASSWORD_MD5_SALT: anysalt
       # 开启注册之后 超级管理邮箱
-      ROOT_USER: xxx@qq.com
+      ROOT_USER: 981005580@qq.com
       # 开启注册之后 网站域名 不含 / 注册的时候发送验证邮箱使用
       SITE_DOMAIN: http://127.0.0.1:1002
       # 开启注册之后 发送验证邮箱配置
