@@ -35,7 +35,7 @@ export async function getChat(roomId: number, uuid: number) {
   return await chatCol.findOne({ roomId, uuid }) as ChatInfo
 }
 
-export async function getChatByMessageId(messageId: string) {
+export async function getChatByMessageId(messageId: string) {  
   return await chatCol.findOne({ 'options.messageId': messageId }) as ChatInfo
 }
 

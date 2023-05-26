@@ -608,7 +608,7 @@ router.post('/session', async (req, res) => {
     })
   }
   catch (error) {
-    res.send({ status: 'Fail', message: error.message, data: null })
+    res.send({ status: 'Fail', message: error.message, data: '错误' })
   }
 })
 
