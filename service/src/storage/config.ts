@@ -25,7 +25,7 @@ export async function getCacheConfig(): Promise<Config> {
 
 export async function getOriginConfig() {
   let config = await getConfig()
-  console.log(process.env.REGISTER_ENABLED);
+  console.log("ENV配置：",process.env.REGISTER_ENABLED);
   if (config == null) {
     config = new Config(new ObjectId(),
       !isNaN(+process.env.TIMEOUT_MS) ? +process.env.TIMEOUT_MS : 30 * 1000,
