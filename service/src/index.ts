@@ -485,6 +485,7 @@ router.post('/user-register', async (req, res) => {
   try {
     const { username, password } = req.body as { username: string; password: string }
     const config = await getCacheConfig()
+    console.log(config.siteConfig.registerEnabled);
     if (!config.siteConfig.registerEnabled) {
       res.send({ status: 'Fail', message: '注册账号功能未启用 | Register account is disabled!', data: null })
       return
