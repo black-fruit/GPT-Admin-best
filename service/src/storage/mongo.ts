@@ -213,6 +213,7 @@ export async function getUser(email: string): Promise<UserInfo> {
 
 export async function getUsers(page: number, size: number): Promise<{ users: UserInfo[]; total: number }> {
   const cursor = userCol.find({ status: { $ne: Status.Deleted } }).sort({ createTime: -1 })
+  console.log("cursor:", cursor);
   const total = await cursor.count()
   const skip = (page - 1) * size
   const limit = size
@@ -222,7 +223,6 @@ export async function getUsers(page: number, size: number): Promise<{ users: Use
   users.forEach((user) => {
     initUserInfo(user)
   })
-  console.log(users, total);
   return { users, total }
 }
 
