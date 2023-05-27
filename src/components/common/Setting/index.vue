@@ -19,6 +19,7 @@ const props = defineProps<Props>()
 const emit = defineEmits<Emit>()
 
 const userStore = useUserStore()
+console.log(userStore.userInfo);
 const authStore = useAuthStore()
 const { isMobile } = useBasicLayout()
 
