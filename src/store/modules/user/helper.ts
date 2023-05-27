@@ -21,7 +21,7 @@ export function defaultSetting(): UserState {
       avatar: '',
       name: '',
       description: '',
-      root: false,
+      root: true,
       config: { chatModel: 'gpt-3.5-turbo' },
     },
   }
