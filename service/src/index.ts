@@ -723,7 +723,6 @@ router.get('/users', rootAuth, async (req, res) => {
     const page = +req.query.page
     const size = +req.query.size    
     const data = await getUsers(page, size)
-    console.log(data);
     res.send({ status: 'Success', message: '获取成功 | Get successfully', data })
   }
   catch (error) {

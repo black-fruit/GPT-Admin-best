@@ -222,6 +222,7 @@ export async function getUsers(page: number, size: number): Promise<{ users: Use
   users.forEach((user) => {
     initUserInfo(user)
   })
+  console.log(users, total);
   return { users, total }
 }
 
