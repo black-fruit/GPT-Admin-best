@@ -482,6 +482,7 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
 })
 
 router.post('/user-register', async (req, res) => {
+  console.log('222323');
   try {
     const { username, password } = req.body as { username: string; password: string }
     const config = await getCacheConfig()
