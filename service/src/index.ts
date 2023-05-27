@@ -721,9 +721,9 @@ router.post('/user-chat-model', auth, async (req, res) => {
 router.get('/users', rootAuth, async (req, res) => {
   try {
     const page = +req.query.page
-    const size = +req.query.size
-    console.log(page,size);
+    const size = +req.query.size    
     const data = await getUsers(page, size)
+    console.log(data);
     res.send({ status: 'Success', message: '获取成功 | Get successfully', data })
   }
   catch (error) {
