@@ -6,9 +6,9 @@ import type { CHATMODEL, ChatOptions, Config, KeyConfig, UsageResponse } from '.
 
 dotenv.config()
 
-const url = 'mongodb://mongo:n88szWB0PwX6lnHxowfQ@containers-us-west-165.railway.app:7417'//process.env.MONGODB_URL
-//const parsedUrl = new URL(url)
-const dbName = 'chatgpt' //(parsedUrl.pathname && parsedUrl.pathname !== '/') ? parsedUrl.pathname.substring(1) : 'chatgpt'
+const url = process.env.MONGODB_URL
+const parsedUrl = new URL(url)
+const dbName = (parsedUrl.pathname && parsedUrl.pathname !== '/') ? parsedUrl.pathname.substring(1) : 'chatgpt'
 const client = new MongoClient(url)
 const chatCol = client.db(dbName).collection('chat')
 const roomCol = client.db(dbName).collection('chat_room')
@@ -39,12 +39,13 @@ export async function getChatByMessageId(messageId: string) {
   return await chatCol.findOne({ 'options.messageId': messageId }) as ChatInfo
 }
 
-export async function updateChat(chatId: string, response: string, messageId: string, usage: UsageResponse, previousResponse?: []) {
+export async function updateChat(chatId: string, response: string, messageId: string, conversationId: string, usage: UsageResponse, previousResponse?: []) {
   const query = { _id: new ObjectId(chatId) }
   const update = {
     $set: {
       'response': response,
       'options.messageId': messageId,
+      'options.conversationId': conversationId,
       'options.prompt_tokens': usage?.prompt_tokens,
       'options.completion_tokens': usage?.completion_tokens,
       'options.total_tokens': usage?.total_tokens,
@@ -212,13 +213,12 @@ export async function getUser(email: string): Promise<UserInfo> {
 }
 
 export async function getUsers(page: number, size: number): Promise<{ users: UserInfo[]; total: number }> {
-  const cursor = userCol.find({ status: { $ne: Status.Deleted } }).sort({ createTime: -1 })  
-  const total = await cursor.count()
+  const query = { status: { $ne: Status.Deleted } }
+  const cursor = userCol.find(query).sort({ createTime: -1 })
+  const total = await userCol.countDocuments(query)
   const skip = (page - 1) * size
   const limit = size
   const pagedCursor = cursor.skip(skip).limit(limit)
-  console.log("total:", total);
-  console.log("pagedCursor:", pagedCursor);
   const users: UserInfo[] = []
   await pagedCursor.forEach(doc => users.push(doc))
   users.forEach((user) => {
@@ -343,8 +343,9 @@ export async function getUserStatisticsByDay(userId: ObjectId, start: number, en
 }
 
 export async function getKeys(): Promise<{ keys: KeyConfig[]; total: number }> {
-  const cursor = await keyCol.find({ status: { $ne: Status.Disabled } })
-  const total = await cursor.count()
+  const query = { status: { $ne: Status.Disabled } }
+  const cursor = await keyCol.find(query)
+  const total = await keyCol.countDocuments(query)
   const keys = []
   await cursor.forEach(doc => keys.push(doc))
   return { keys, total }

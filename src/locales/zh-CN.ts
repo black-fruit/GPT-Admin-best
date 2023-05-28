@@ -35,6 +35,7 @@ export default {
     passwordConfirm: '确认密码',
     resetPassword: '重置密码',
     resetPasswordMail: '发送重置密码邮件',
+    auditTip: '敏感词对管理员不生效',
   },
   chat: {
     newChatButton: '新建聊天',
@@ -64,7 +65,7 @@ export default {
     usageTotal: '总消耗 token',
     deleteUser: '删除用户',
     setUserRole: '设置权限',
-    deleteUserConfirm: '你确定要删除这个用户吗?',
+    deleteUserConfirm: '你确定要删除这个用户吗? 删除后这个邮箱永远无法注册登录',
     verifiedUser: '通过验证',
     deleteKey: '删除 Key',
     editKeyButton: '编辑 Key',
@@ -136,6 +137,7 @@ export default {
     userRoles: '用户权限',
     status: '状态',
     chatModels: '对话模型',
+    remark: '备注',
   },
   store: {
     siderButton: '提示词商店',

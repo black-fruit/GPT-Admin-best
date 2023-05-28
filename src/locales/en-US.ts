@@ -35,6 +35,7 @@ export default {
     passwordConfirm: 'Confirm Password',
     resetPassword: 'Reset Password',
     resetPasswordMail: 'Send Reset Password Mail',
+    auditTip: 'Sensitive words do not take effect on Admin.',
   },
   chat: {
     newChatButton: 'New Chat',
@@ -64,7 +65,7 @@ export default {
     usageTotal: 'Total token cost',
     deleteUser: 'Delete User',
     setUserRole: 'Set Role',
-    deleteUserConfirm: 'Are you sure to delete this user?',
+    deleteUserConfirm: 'Are you sure to delete this user? After deletion, this email can never be registered or logged in again.',
     verifiedUser: 'Verified User',
     deleteKey: 'Delete Key',
     editKeyButton: 'Edit Key',
@@ -136,6 +137,7 @@ export default {
     userRoles: 'User Role',
     status: 'Status',
     chatModels: 'Chat Models',
+    remark: 'Remark',
   },
   store: {
     siderButton: 'Prompt Store',

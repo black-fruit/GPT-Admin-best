@@ -81,10 +81,12 @@ export async function initApi(key: KeyConfig, chatModel: CHATMODEL) {
     return new ChatGPTUnofficialProxyAPI({ ...options })
   }
 }
-
+const processThreads: { userId: string; abort: AbortController; messageId: string }[] = []
 async function chatReplyProcess(options: RequestOptions) {
   const model = options.chatModel
   const key = options.key
+  const userId = options.userId
+  const messageId = options.messageId
   if (key == null || key === undefined)
     throw new Error('没有可用的配置。请再试一次 | No available configuration. Please try again.')
 
@@ -107,6 +109,10 @@ async function chatReplyProcess(options: RequestOptions) {
         options = { ...lastContext }
     }
     const api = await initApi(key, model)
+
+    const abort = new AbortController()
+    options.abortSignal = abort.signal
+    processThreads.push({ userId, abort, messageId })
     const response = await api.sendMessage(message, {
       ...options,
       onProgress: (partialResponse) => {
@@ -125,7 +131,20 @@ async function chatReplyProcess(options: RequestOptions) {
   }
   finally {
     releaseApiKey(key)
+    const index = processThreads.findIndex(d => d.userId === userId)
+    if (index > -1)
+      processThreads.splice(index, 1)
   }
+}
+
+export function abortChatProcess(userId: string) {
+  const index = processThreads.findIndex(d => d.userId === userId)
+  if (index <= -1)
+    return
+  const messageId = processThreads[index].messageId
+  processThreads[index].abort.abort()
+  processThreads.splice(index, 1)
+  return messageId
 }
 
 export function initAuditService(audit: AuditConfig) {
@@ -307,37 +326,52 @@ async function getMessageById(id: string): Promise<ChatMessage | undefined> {
   else { return undefined }
 }
 
-const _lockedKeys: string[] = []
-async function randomKeyConfig(keys: KeyConfig[]): Promise < KeyConfig | null > {
+const _lockedKeys: { key: string; count: number }[] = []
+const _oneTimeCount = 3 // api
+async function randomKeyConfig(keys: KeyConfig[]): Promise<KeyConfig | null> {
   if (keys.length <= 0)
     return null
-  let unsedKeys = keys.filter(d => !_lockedKeys.includes(d.key))
+  let unsedKeys = keys.filter(d => _lockedKeys.filter(l => d.key === l.key).length <= 0
+    || _lockedKeys.filter(l => d.key === l.key)[0].count < _oneTimeCount)
   const start = Date.now()
   while (unsedKeys.length <= 0) {
     if (Date.now() - start > 3000)
       break
     await new Promise(resolve => setTimeout(resolve, 1000))
-    unsedKeys = keys.filter(d => !_lockedKeys.includes(d.key))
+    unsedKeys = keys.filter(d => _lockedKeys.filter(l => d.key === l.key).length <= 0
+      || _lockedKeys.filter(l => d.key === l.key)[0].count < _oneTimeCount)
   }
   if (unsedKeys.length <= 0)
     return null
   const thisKey = unsedKeys[Math.floor(Math.random() * unsedKeys.length)]
-  _lockedKeys.push(thisKey.key)
+  const thisLockedKey = _lockedKeys.filter(d => d.key === thisKey.key)
+  if (thisLockedKey.length <= 0)
+    _lockedKeys.push({ key: thisKey.key, count: 1 })
+  else
+    thisLockedKey[0].count++
   return thisKey
 }
 
-async function getRandomApiKey(user: UserInfo): Promise<KeyConfig | undefined> {
+async function getRandomApiKey(user: UserInfo, chatModel: CHATMODEL): Promise<KeyConfig | undefined> {
   const keys = (await getCacheApiKeys()).filter(d => hasAnyRole(d.userRoles, user.roles))
-  return randomKeyConfig(keys)
+  return randomKeyConfig(keys.filter(d => d.chatModels.includes(chatModel)))
 }
 
 async function releaseApiKey(key: KeyConfig) {
   if (key == null || key === undefined)
     return
 
-  const index = _lockedKeys.indexOf(key.key)
-  if (index >= 0)
-    _lockedKeys.splice(index, 1)
+  const lockedKeys = _lockedKeys.filter(d => d.key === key.key)
+  if (lockedKeys.length > 0) {
+    if (lockedKeys[0].count <= 1) {
+      const index = _lockedKeys.findIndex(item => item.key === key.key)
+      if (index !== -1)
+        _lockedKeys.splice(index, 1)
+    }
+    else {
+      lockedKeys[0].count--
+    }
+  }
 }
 
 export type { ChatContext, ChatMessage }

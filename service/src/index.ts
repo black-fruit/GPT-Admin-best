@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv'
 import { ObjectId } from 'mongodb'
 import type { RequestProps } from './types'
 import type { ChatContext, ChatMessage } from './chatgpt'
-import { chatConfig, chatReplyProcess, containsSensitiveWords, getRandomApiKey, initAuditService } from './chatgpt'
+import { abortChatProcess, chatConfig, chatReplyProcess, containsSensitiveWords, getRandomApiKey, initAuditService } from './chatgpt'
 import { auth, getUserId } from './middleware/auth'
 import { clearApiKeyCache, clearConfigCache, getApiKeys, getCacheApiKeys, getCacheConfig, getOriginConfig } from './storage/config'
 import type { AuditConfig, CHATMODEL, ChatInfo, ChatOptions, Config, KeyConfig, MailConfig, SiteConfig, UsageResponse, UserInfo } from './storage/model'
@@ -430,7 +430,9 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
       temperature,
       top_p,
       chatModel: user.config.chatModel,
-      key: await getRandomApiKey(user),
+      key: await getRandomApiKey(user, user.config.chatModel),
+      userId,
+      messageId: message._id.toString(),
     })
     // return the whole response including usage
     res.write(`\n${JSON.stringify(result.data)}`)
@@ -457,6 +459,7 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
         await updateChat(message._id as unknown as string,
           result.data.text,
           result.data.id,
+          result.data.conversationId,
           result.data.detail?.usage as UsageResponse,
           previousResponse as [])
       }
@@ -464,6 +467,7 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
         await updateChat(message._id as unknown as string,
           result.data.text,
           result.data.id,
+          result.data.conversationId,
           result.data.detail?.usage as UsageResponse)
       }
 
@@ -478,6 +482,23 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
     catch (error) {
       global.console.log(error)
     }
+  }
+})
+
+router.post('/chat-abort', [auth, limiter], async (req, res) => {
+  try {
+    const userId = req.headers.userId.toString()
+    const { text, messageId, conversationId } = req.body as { text: string; messageId: string; conversationId: string }
+    const msgId = await abortChatProcess(userId)
+    await updateChat(msgId,
+      text,
+      messageId,
+      conversationId,
+      null)
+    res.send({ status: 'Success', message: 'OK', data: null })
+  }
+  catch (error) {
+    res.send({ status: 'Fail', message: '重置邮件已发送 | Reset email has been sent', data: null })
   }
 })
 
@@ -565,11 +586,10 @@ router.post('/session', async (req, res) => {
       key: string
       value: string
     }[] = []
-    
     if (userId != null) {
       const user = await getUserById(userId)
       const keys = (await getCacheApiKeys()).filter(d => hasAnyRole(d.userRoles, user.roles))
-      
+
       const count: { key: string; count: number }[] = []
       chatModelOptions.forEach((chatModel) => {
         keys.forEach((key) => {
@@ -586,8 +606,9 @@ router.post('/session', async (req, res) => {
       })
       count.forEach((c) => {
         const thisChatModel = chatModelOptions.filter(d => d.value === c.key)[0]
+        const suffix = c.count > 1 ? ` (${c.count})` : ''
         chatModels.push({
-          label: `${thisChatModel.label} (${c.count})`,
+          label: `${thisChatModel.label}${suffix}`,
           key: c.key,
           value: c.key,
         })
@@ -619,8 +640,6 @@ router.post('/user-login', async (req, res) => {
       throw new Error('用户名或密码为空 | Username or password is empty')
 
     const user = await getUser(username)
-    console.log('mm:',user.password);
-    console.log('md5:',md5(password));
     if (user == null || user.password !== md5(password))
       throw new Error('用户不存在或密码错误 | User does not exist or incorrect password.')
     if (user.status === Status.PreVerify)
@@ -718,7 +737,7 @@ router.post('/user-chat-model', auth, async (req, res) => {
 router.get('/users', rootAuth, async (req, res) => {
   try {
     const page = +req.query.page
-    const size = +req.query.size    
+    const size = +req.query.size
     const data = await getUsers(page, size)
     res.send({ status: 'Success', message: '获取成功 | Get successfully', data })
   }
@@ -803,11 +822,6 @@ router.post('/verifyadmin', async (req, res) => {
 router.post('/setting-base', rootAuth, async (req, res) => {
   try {
     const { apiKey, apiModel, apiBaseUrl, accessToken, timeoutMs, reverseProxy, socksProxy, socksAuth, httpsProxy } = req.body as Config
-
-    if (apiModel === 'ChatGPTAPI' && !isNotEmptyString(apiKey))
-      throw new Error('Missing OPENAI_API_KEY environment variable.')
-    else if (apiModel === 'ChatGPTUnofficialProxyAPI' && !isNotEmptyString(accessToken))
-      throw new Error('Missing OPENAI_ACCESS_TOKEN environment variable.')
 
     const thisConfig = await getOriginConfig()
     thisConfig.apiKey = apiKey

@@ -25,7 +25,7 @@ const show = computed({
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
-console.log(authStore.session);
+
 const ms = useMessage()
 
 const loading = ref(false)

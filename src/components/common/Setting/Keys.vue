@@ -78,17 +78,14 @@ const columns = [
     },
   },
   {
-    title: 'Status',
-    key: 'status',
-    width: 100,
-    render(row: any) {
-      return Status[row.status]
-    },
+    title: 'Remark',
+    key: 'remark',
+    width: 220,
   },
   {
     title: 'Action',
     key: '_id',
-    width: 200,
+    width: 220,
     render(row: KeyConfig) {
       const actions: any[] = []
       if (row.status === Status.Normal) {
@@ -215,8 +212,16 @@ onMounted(async () => {
           </NButton>
         </NSpace>
         <NDataTable
-          ref="table" remote :loading="loading" :row-key="(rowData) => rowData._id" :columns="columns"
-          :data="keys" :pagination="pagination" :max-height="444" striped @update:page="handleGetKeys"
+          ref="table"
+          remote
+          :loading="loading"
+          :row-key="(rowData) => rowData._id"
+          :columns="columns"
+          :data="keys"
+          :pagination="pagination"
+          :max-height="444"
+          :scroll-x="1300"
+          striped @update:page="handleGetKeys"
         />
       </NSpace>
     </div>
