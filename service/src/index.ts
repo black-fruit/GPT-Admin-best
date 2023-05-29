@@ -613,6 +613,8 @@ router.post('/session', async (req, res) => {
           value: c.key,
         })
       })
+    }else{
+      chatModels = [{ label: "", key: "", value: "gpt-3.5-turbo" }]
     }
 
     res.send({
@@ -623,7 +625,7 @@ router.post('/session', async (req, res) => {
         allowRegister,
         model: config.apiModel,
         title: config.siteConfig.siteTitle,
-        chatModels:chatModels.length ? chatModels : [{ label: "", key: "", value: "gpt-3.5-turbo" }],
+        chatModels,
         allChatModels: chatModelOptions
       },
     })
