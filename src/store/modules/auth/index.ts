@@ -55,6 +55,7 @@ export const useAuthStore = defineStore('auth-store', {
     async setToken(token: string) {
       this.token = token
       const decoded = jwt_decode(token) as UserInfo
+      console.log(decoded.config);
       const userStore = useUserStore()
       if (decoded.config === undefined || decoded.config === null) {
         decoded.config = new UserConfig()
