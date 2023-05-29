@@ -614,7 +614,7 @@ router.post('/session', async (req, res) => {
         })
       })
     }else{
-      chatModels = [{ label: "", key: "", value: "gpt-3.5-turbo" }]
+      chatModels.push({ label: "", key: "", value: "gpt-3.5-turbo" });
     }
 
     res.send({
