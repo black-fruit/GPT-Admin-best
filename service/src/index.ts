@@ -623,9 +623,8 @@ router.post('/session', async (req, res) => {
         allowRegister,
         model: config.apiModel,
         title: config.siteConfig.siteTitle,
-        chatModels,
-        allChatModels: chatModelOptions,
-        userId:userId
+        chatModels:chatModels.length ? chatModels : [{ label: "", key: "", value: "gpt-3.5-turbo" }],
+        allChatModels: chatModelOptions
       },
     })
   }
