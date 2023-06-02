@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import type { Ref } from 'vue'
+import axios from 'axios'
 import { computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -20,6 +21,8 @@ import IconPrompt from '@/icons/Prompt.vue'
 import { UserConfig } from '@/components/common/Setting/model'
 import type { CHATMODEL } from '@/components/common/Setting/model'
 const Prompt = defineAsyncComponent(() => import('@/components/common/Setting/Prompt.vue'))
+
+
 
 let controller = new AbortController()
 let lastChatInfo: any = {}
@@ -599,6 +602,49 @@ onUnmounted(() => {
   if (loading.value)
     controller.abort()
 })
+//使用 HTML5 中提供的 getUserMedia API 来获取设备的摄像头
+async function startCamera() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+    const video = document.querySelector('video')
+    video.srcObject = stream
+    video.onloadedmetadata = () => {
+      video.play()
+    }
+  } catch (err) {
+    console.error(err)
+  }
+}
+//在页面中添加一个拍照按钮，点击按钮时，调用 canvas 的 drawImage() 方法，将视频帧绘制到画布上
+function takePicture() {
+  startCamera();
+  const video = document.querySelector('video')
+  const canvas = document.querySelector('canvas')
+  canvas.width = video.videoWidth
+  canvas.height = video.videoHeight
+  const ctx = canvas.getContext('2d')
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+  savePicture();
+}
+
+//将绘制好的图像保存为图片，并将其发送到服务器。
+function savePicture() {
+  const canvas = document.querySelector('canvas')
+  const dataURL = canvas.toDataURL('image/png')
+  fetch('/api/upload', {
+    method: 'POST',
+    body: JSON.stringify({ image: dataURL }),
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+    })
+    .catch(error => {
+      console.error(error)
+    })
+}
+
 </script>
 
 <template>
@@ -678,8 +724,12 @@ onUnmounted(() => {
                 <SvgIcon icon="ri:chat-history-line" />
               </span>
             </HoverButton>
+            <video></video>
+            <NButton type="primary"  @click="takePicture">拍照</NButton>
+            <canvas style="display:none;"></canvas>
+
             <NSelect
-              style="width: 650px"
+              style="width: 250px"
               :value="userStore.userInfo.config.chatModel"
               :options="authStore.session?.chatModels"
               :disabled="!!authStore.session?.auth && !authStore.token"
