@@ -1,6 +1,5 @@
 <script setup lang='ts'>
 import type { Ref } from 'vue'
-import axios from 'axios'
 import { computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
