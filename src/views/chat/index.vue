@@ -727,12 +727,11 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
                 <SvgIcon icon="ri:chat-history-line" />
               </span>
             </HoverButton>
-            <video ref="video" width="320" height="240" autoplay></video>
             <canvas ref="canvas" style="display:none;"></canvas>
             <NButton type="primary" size="small"  @click="startCamera">授权</NButton>
             <NButton type="primary" size="small"  @click="takePicture">拍照</NButton>
             <NButton type="primary" size="small"  @click="savePicture">保存</NButton>
-
+            <video ref="video" autoplay></video>
             <NSelect
               style="width: 250px"
               :value="userStore.userInfo.config.chatModel"
