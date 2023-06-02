@@ -606,7 +606,7 @@ onUnmounted(() => {
 async function startCamera() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-    const video = document.querySelector('video')
+    const video = document.querySelector('video') as HTMLVideoElement
     video.srcObject = stream
     video.onloadedmetadata = () => {
       video.play()
@@ -618,18 +618,18 @@ async function startCamera() {
 //在页面中添加一个拍照按钮，点击按钮时，调用 canvas 的 drawImage() 方法，将视频帧绘制到画布上
 function takePicture() {
   startCamera();
-  const video = document.querySelector('video')
-  const canvas = document.querySelector('canvas')
+  const video = document.querySelector('video') as HTMLVideoElement
+  const canvas = document.querySelector('canvas') as HTMLCanvasElement
   canvas.width = video.videoWidth
   canvas.height = video.videoHeight
-  const ctx = canvas.getContext('2d')
+  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
   savePicture();
 }
 
 //将绘制好的图像保存为图片，并将其发送到服务器。
 function savePicture() {
-  const canvas = document.querySelector('canvas')
+  const canvas = document.querySelector('canvas') as HTMLCanvasElement
   const dataURL = canvas.toDataURL('image/png')
   fetch('/api/upload', {
     method: 'POST',
