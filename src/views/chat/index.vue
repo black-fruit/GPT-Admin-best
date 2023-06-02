@@ -679,7 +679,7 @@ onUnmounted(() => {
               </span>
             </HoverButton>
             <NSelect
-              style="width: 250px"
+              style="width: 650px"
               :value="userStore.userInfo.config.chatModel"
               :options="authStore.session?.chatModels"
               :disabled="!!authStore.session?.auth && !authStore.token"
