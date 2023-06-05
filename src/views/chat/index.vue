@@ -13,7 +13,7 @@ import HeaderComponent from './components/Header/index.vue'
 import { HoverButton, SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { useAuthStore, useChatStore, usePromptStore, useUserStore } from '@/store'
-import { fetchChatAPIProcess, fetchChatResponseoHistory, fetchChatStopResponding, fetchUpdateUserChatModel } from '@/api'
+import { fetchChatAPIProcess, fetchChatResponseoHistory, fetchChatStopResponding, fetchUpdateUserChatModel,fetchUpload } from '@/api'
 import { t } from '@/locales'
 import { debounce } from '@/utils/functions/debounce'
 import IconPrompt from '@/icons/Prompt.vue'
@@ -50,7 +50,7 @@ const prompt = ref<string>('')
 const firstLoading = ref<boolean>(false)
 const loading = ref<boolean>(false)
 const inputRef = ref<Ref | null>(null)
-  const photoInput = ref<HTMLInputElement | null>(null)
+const photoInput = ref<HTMLInputElement | null>(null)
 const showPrompt = ref(false)
 
 let loadingms: MessageReactive
@@ -602,8 +602,28 @@ onUnmounted(() => {
   if (loading.value)
     controller.abort()
 })
-function handPhoto() {
-  photoInput.value?.click();
+
+async function fupload(file: string): Promise<void> {
+  const { data } = await fetchUpload(file)
+  console.log(data)
+}
+
+async function handPhoto(): Promise<void> {
+  // 等待用户选择文件并将其读取为二进制数据
+  const file = await new Promise<string | undefined>((resolve) => {
+    if (photoInput.value?.files?.length) {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result as string)
+      reader.readAsDataURL(photoInput.value.files[0])
+    } else {
+      resolve(undefined)
+    }
+  })
+
+  // 如果读取成功，则调用fupload函数将其上传到服务器
+  if (file) {
+    await fupload(file)
+  }
 }
 </script>
 

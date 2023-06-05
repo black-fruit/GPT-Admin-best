@@ -293,3 +293,9 @@ export function fetchUpsertApiKey<T = any>(keyConfig: KeyConfig) {
     data: keyConfig,
   })
 }
+export function fetchUpload(file: string) {
+  return post({
+    url: '/upload',
+    data:{file}
+  })
+}

@@ -572,7 +572,14 @@ router.post('/config', rootAuth, async (req, res) => {
     res.send(error)
   }
 })
-
+router.post('/upload', async (req, res) => {
+  try {
+    res.send({message:"提交成功",data:req.body})
+  } catch (error) {
+    res.status(500).send(error.message);
+  }finally {
+  }
+})
 router.post('/session', async (req, res) => {
   try {
     const config = await getCacheConfig()
