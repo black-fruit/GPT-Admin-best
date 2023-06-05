@@ -681,9 +681,12 @@ onUnmounted(() => {
                 <SvgIcon icon="ri:chat-history-line" />
               </span>
             </HoverButton>
-            <canvas ref="canvas" style="display:none;"></canvas>
+            <HoverButton  @click="handleToggleUsingContext">
+              <span class="text-xl" :class="{ 'text-[#4b9e5f]': usingContext, 'text-[#a8071a]': !usingContext }">
+                <SvgIcon icon="ic:baseline-add-a-photo" />
+              </span>
+            </HoverButton>
             <input type="file" accept="image/*" >
-            <video ref="video" autoplay></video>
             <NSelect
               style="width: 250px"
               :value="userStore.userInfo.config.chatModel"
