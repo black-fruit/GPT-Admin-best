@@ -618,13 +618,15 @@ async function handPhoto(): Promise<void> {
     input.addEventListener('change', () => resolve(input.files?.[0]))
     document.body.appendChild(input)
     input.click()
-  }).then(async (file?: File) => {
+  }).then(async (file?: unknown) => {
     if (file) {
+      // 显式地将参数类型转换为File | undefined
+      const selectedFile = file as File
       // 如果用户成功选择了文件，则将其读取为Base64编码的字符串并上传
       const dataUrl = await new Promise<string>((resolve) => {
         const reader = new FileReader()
         reader.onload = () => resolve(reader.result as string)
-        reader.readAsDataURL(file)
+        reader.readAsDataURL(selectedFile)
       })
       await fupload(dataUrl)
     }
