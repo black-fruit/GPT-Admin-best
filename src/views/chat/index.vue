@@ -686,7 +686,7 @@ function handPhoto(this:Ref){
             <HoverButton  @click="handPhoto">
               <span class="text-xl" :class="{ 'text-[#4b9e5f]': usingContext, 'text-[#a8071a]': !usingContext }">
                 <SvgIcon icon="ic:baseline-add-a-photo" />
-                <input ref="photo" type="file" accept="image/*" style="display: none" >
+                <input ref="photoInput" type="file" accept="image/*" style="display: none" >
               </span>
             </HoverButton>
             <NSelect
