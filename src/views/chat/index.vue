@@ -601,7 +601,9 @@ onUnmounted(() => {
   if (loading.value)
     controller.abort()
 })
-
+function handPhoto(){
+  this.$refs.photoInput.click();
+}
 </script>
 
 <template>
@@ -681,12 +683,12 @@ onUnmounted(() => {
                 <SvgIcon icon="ri:chat-history-line" />
               </span>
             </HoverButton>
-            <HoverButton  @click="handleToggleUsingContext">
+            <HoverButton  @click="handPhoto">
               <span class="text-xl" :class="{ 'text-[#4b9e5f]': usingContext, 'text-[#a8071a]': !usingContext }">
                 <SvgIcon icon="ic:baseline-add-a-photo" />
+                <input ref="photo" type="file" accept="image/*" style="display: none" >
               </span>
             </HoverButton>
-            <input type="file" accept="image/*" >
             <NSelect
               style="width: 250px"
               :value="userStore.userInfo.config.chatModel"
