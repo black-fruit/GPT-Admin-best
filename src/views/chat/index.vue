@@ -601,9 +601,10 @@ onUnmounted(() => {
   if (loading.value)
     controller.abort()
 })
-function handPhoto(this:Ref){
-  this.$refs.photoInput.click();
-}
+ function handPhoto(this: Ref) {
+      const input = this.$refs.photoInput as HTMLInputElement;
+      input.click();
+    }
 </script>
 
 <template>
