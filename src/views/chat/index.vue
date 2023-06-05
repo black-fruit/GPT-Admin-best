@@ -601,10 +601,10 @@ onUnmounted(() => {
   if (loading.value)
     controller.abort()
 })
- function handPhoto(this: Ref) {
-      const input = this.$refs.photoInput as HTMLInputElement;
-      input.click();
-    }
+ function handPhoto(this: { $refs: { photoInput: ref<HTMLInputElement> } }) {
+      this.$refs.photoInput.value = null; // 清空已选择的文件
+      this.$refs.photoInput.click();
+    },
 </script>
 
 <template>
