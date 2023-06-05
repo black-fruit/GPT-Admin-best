@@ -602,52 +602,6 @@ onUnmounted(() => {
     controller.abort()
 })
 
-const videoRef = ref<HTMLVideoElement | null>(null)
-const canvasRef = ref<HTMLCanvasElement | null>(null)
-  async function startCamera() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-        if (videoRef.value) {
-          videoRef.value.srcObject = stream
-          videoRef.value.onloadedmetadata = () => {
-            videoRef.value?.play()
-          }
-        }
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    function takePicture() {
-      const video = videoRef.value
-      const canvas = canvasRef.value
-      if (video && canvas) {
-        canvas.width = video.videoWidth
-        canvas.height = video.videoHeight
-        const ctx = canvas.getContext('2d')
-        ctx?.drawImage(video, 0, 0, canvas.width, canvas.height)
-      }
-    }
-
-    function savePicture() {
-      const canvas = canvasRef.value
-      if (canvas) {
-        const dataURL = canvas.toDataURL('image/png')
-        fetch('/api/upload', {
-          method: 'POST',
-          body: JSON.stringify({ image: dataURL }),
-          headers: { 'Content-Type': 'application/json' }
-        })
-          .then(response => response.json())
-          .then(data => {
-            console.log(data)
-          })
-          .catch(error => {
-            console.error(error)
-          })
-      }
-    }
-
 </script>
 
 <template>
@@ -728,9 +682,7 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
               </span>
             </HoverButton>
             <canvas ref="canvas" style="display:none;"></canvas>
-            <NButton type="primary" size="small"  @click="startCamera">授权</NButton>
-            <NButton type="primary" size="small"  @click="takePicture">拍照</NButton>
-            <NButton type="primary" size="small"  @click="savePicture">保存</NButton>
+            <input type="file" accept="image/*" >
             <video ref="video" autoplay></video>
             <NSelect
               style="width: 250px"
