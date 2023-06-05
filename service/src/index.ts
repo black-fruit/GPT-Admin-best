@@ -46,6 +46,7 @@ import { hasAnyRole, isEmail, isNotEmptyString } from './utils/is'
 import { sendNoticeMail, sendResetPasswordMail, sendTestMail, sendVerifyMail, sendVerifyMailAdmin } from './utils/mail'
 import { checkUserResetPassword, checkUserVerify, checkUserVerifyAdmin, getUserResetPasswordUrl, getUserVerifyUrl, getUserVerifyUrlAdmin, md5 } from './utils/security'
 import { rootAuth } from './middleware/rootAuth'
+import * as qiniu from 'qiniu'
 
 dotenv.config()
 
@@ -574,6 +575,68 @@ router.post('/config', rootAuth, async (req, res) => {
 })
 router.post('/upload', async (req, res) => {
   try {
+    const bucket = 'ai-up'
+    const accessKey = 'e5uCqg8a9uo6BeGtR_lHftsZ-oF_kQdYWrDpqkOR'
+    const secretKey = 'sp1ZQOsSomQNVKjUwJWhXCP069m1BNkMQI3V1mxV'
+
+    const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
+
+    const name = req.body
+
+    const saveJpgEntry = qiniu.util.urlsafeBase64Encode(`${bucket}:${name}`)
+    const fops =
+      'imageView2/1/w/100/h/100/format/webp/q/75|watermark/2/text/NWk=/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim'
+    //数据处理指令，支持多个指令
+    const vframeJpgFop = `${fops}|saveas/${saveJpgEntry}`
+
+    const options: qiniu.rs.PutPolicyOptions = {
+      scope: bucket,
+      expires: 7200,
+      returnBody:
+        '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}',
+      //将多个数据处理指令拼接起来
+      persistentOps: vframeJpgFop,
+      //数据处理队列名称，必填
+      persistentPipeline: 'img-pipe',
+      // //数据处理完成结果通知地址
+      // persistentNotifyUrl: "http://api.example.com/qiniu/pfop/notify",
+    }
+
+    const putPolicy = new qiniu.rs.PutPolicy(options)
+    const uploadToken = putPolicy.uploadToken(mac)
+
+    const config = new qiniu.conf.Config()
+    const localFile = req.body
+    config.zone = qiniu.zone.Zone_z1
+    config.useCdnDomain = true
+
+    const resumeUploader = new qiniu.resume_up.ResumeUploader(config)
+    const putExtra = new qiniu.resume_up.PutExtra()
+    putExtra.params = {
+      // "x:name": "",
+      // "x:age": 27,
+    }
+    putExtra.fname = name
+    // putExtra.resumeRecordFile = 'progress.log';
+    putExtra.progressCallback = function (uploadBytes, totalBytes) {
+      console.log(`progress: ${uploadBytes * 100 / totalBytes}%`)
+    }
+    //file
+    resumeUploader.putFile(uploadToken, null, localFile, putExtra, function (
+      respErr,
+      respBody,
+      respInfo
+    ) {
+      if (respErr) {
+        throw respErr
+      }
+      if (respInfo.statusCode == 200) {
+        console.log(respBody)
+      } else {
+        console.log(respInfo.statusCode)
+        console.log(respBody)
+      }
+    })
     res.send({message:"提交成功",data:req.body})
   } catch (error) {
     res.status(500).send(error.message);
