@@ -609,23 +609,26 @@ async function fupload(file: string): Promise<void> {
 }
 
 async function handPhoto(): Promise<void> {
-
-  photoInput.value?.click();
-  // 等待用户选择文件并将其读取为二进制数据
-  const file = await new Promise<string | undefined>((resolve) => {
-    if (photoInput.value?.files?.length) {
-      const reader = new FileReader()
-      reader.onload = () => resolve(reader.result as string)
-      reader.readAsDataURL(photoInput.value.files[0])
-    } else {
-      resolve(undefined)
+  // 唤起文件选择对话框，并等待用户完成文件选择
+  await new Promise((resolve) => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
+    input.style.display = 'none'
+    input.addEventListener('change', () => resolve(input.files?.[0]))
+    document.body.appendChild(input)
+    input.click()
+  }).then(async (file?: File) => {
+    if (file) {
+      // 如果用户成功选择了文件，则将其读取为Base64编码的字符串并上传
+      const dataUrl = await new Promise<string>((resolve) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(reader.result as string)
+        reader.readAsDataURL(file)
+      })
+      await fupload(dataUrl)
     }
   })
-
-  // 如果读取成功，则调用fupload函数将其上传到服务器
-  if (file) {
-    await fupload(file)
-  }
 }
 </script>
 
