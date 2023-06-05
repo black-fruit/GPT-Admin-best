@@ -50,6 +50,7 @@ const prompt = ref<string>('')
 const firstLoading = ref<boolean>(false)
 const loading = ref<boolean>(false)
 const inputRef = ref<Ref | null>(null)
+const photoInput = ref<Ref | null>(null)
 const showPrompt = ref(false)
 
 let loadingms: MessageReactive
@@ -601,9 +602,8 @@ onUnmounted(() => {
   if (loading.value)
     controller.abort()
 })
-function handPhoto(this: { $refs: { photoInput: Ref<HTMLInputElement> } }) {
-      this.$refs.photoInput.value = null; // 清空已选择的文件
-      this.$refs.photoInput.click();
+function handPhoto() {
+      photoInput.click();
 }
 </script>
 
@@ -687,7 +687,7 @@ function handPhoto(this: { $refs: { photoInput: Ref<HTMLInputElement> } }) {
             <HoverButton  @click="handPhoto">
               <span class="text-xl" :class="{ 'text-[#4b9e5f]': usingContext, 'text-[#a8071a]': !usingContext }">
                 <SvgIcon icon="ic:baseline-add-a-photo" />
-                <input ref="photoInput" type="file" accept="image/*" style="display: none" >
+                <NInput ref="photoInput" type="file" accept="image/*" style="display: none" />
               </span>
             </HoverButton>
             <NSelect
