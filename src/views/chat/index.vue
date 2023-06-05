@@ -50,7 +50,7 @@ const prompt = ref<string>('')
 const firstLoading = ref<boolean>(false)
 const loading = ref<boolean>(false)
 const inputRef = ref<Ref | null>(null)
-  const photoInput = ref<HTMLInputElement | null>(null);
+  const photoInput = ref<HTMLInputElement | null>(null)
 const showPrompt = ref(false)
 
 let loadingms: MessageReactive
@@ -603,7 +603,7 @@ onUnmounted(() => {
     controller.abort()
 })
 function handPhoto() {
-      photoInput.click();
+  photoInput.value?.click();
 }
 </script>
 
