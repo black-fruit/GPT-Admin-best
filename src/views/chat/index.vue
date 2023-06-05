@@ -609,6 +609,8 @@ async function fupload(file: string): Promise<void> {
 }
 
 async function handPhoto(): Promise<void> {
+
+  photoInput.value?.click();
   // 等待用户选择文件并将其读取为二进制数据
   const file = await new Promise<string | undefined>((resolve) => {
     if (photoInput.value?.files?.length) {
