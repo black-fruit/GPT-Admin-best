@@ -580,7 +580,7 @@ router.post('/upload', async (req, res) => {
     const secretKey = 'sp1ZQOsSomQNVKjUwJWhXCP069m1BNkMQI3V1mxV'
 
     const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
-    res.send({message:"提交成功",data:req.body,mac:mac})
+    res.send({message:"提交成功",data:qiniu})
     const name = req.body
 
     const saveJpgEntry = qiniu.util.urlsafeBase64Encode(`${bucket}:${name}`)
