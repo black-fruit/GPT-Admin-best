@@ -611,8 +611,9 @@ async function fupload(file: string): Promise<void> {
 async function handPhoto(): Promise<void> {
   // 唤起文件选择对话框，并等待用户完成文件选择
   await new Promise((resolve) => {
-    photoInput.onchange = () => resolve(photoInput.files?.[0])
-    photoInput.click()
+    const input = photoInput.value
+    input.onchange = () => resolve(input.files?.[0])
+    input.click()
   }).then(async (file?: unknown) => {
     if (file) {
       // 显式地将参数类型转换为 File 类型
