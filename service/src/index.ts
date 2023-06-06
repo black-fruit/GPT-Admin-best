@@ -583,6 +583,7 @@ router.post('/upload', async (req, res) => {
     const name = req.body
 
     const saveJpgEntry = qiniu.util.urlsafeBase64Encode(`${bucket}:${name}`)
+    res.send(saveJpgEntry)
     const fops =
       'imageView2/1/w/100/h/100/format/webp/q/75|watermark/2/text/NWk=/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim'
     //数据处理指令，支持多个指令
