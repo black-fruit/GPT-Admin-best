@@ -611,18 +611,13 @@ async function fupload(file: string): Promise<void> {
 async function handPhoto(): Promise<void> {
   // 唤起文件选择对话框，并等待用户完成文件选择
   await new Promise((resolve) => {
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = 'image/*'
-    input.style.display = 'none'
-    input.addEventListener('change', () => resolve(input.files?.[0]))
-    document.body.appendChild(input)
-    input.click()
+    photoInput.onchange = () => resolve(photoInput.files?.[0])
+    photoInput.click()
   }).then(async (file?: unknown) => {
     if (file) {
-      // 显式地将参数类型转换为File | undefined
+      // 显式地将参数类型转换为 File 类型
       const selectedFile = file as File
-      // 如果用户成功选择了文件，则将其读取为Base64编码的字符串并上传
+      // 如果用户成功选择了文件，则将其读取为 Base64 编码的字符串并上传
       const dataUrl = await new Promise<string>((resolve) => {
         const reader = new FileReader()
         reader.onload = () => resolve(reader.result as string)
