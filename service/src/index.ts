@@ -47,6 +47,7 @@ import { sendNoticeMail, sendResetPasswordMail, sendTestMail, sendVerifyMail, se
 import { checkUserResetPassword, checkUserVerify, checkUserVerifyAdmin, getUserResetPasswordUrl, getUserVerifyUrl, getUserVerifyUrlAdmin, md5 } from './utils/security'
 import { rootAuth } from './middleware/rootAuth'
 import * as qiniu from 'qiniu'
+import * as fs from 'fs'
 
 dotenv.config()
 
@@ -622,8 +623,11 @@ router.post('/upload', async (req, res) => {
     //分片上传可指定 version 字段，v2 表示分片上传 v2 , 可自定义分片大小，此处设为 6MB
     putExtra.version = 'v2'
     putExtra.partSize = 6 * 1024 * 1024
+    // 使用 fs.readFileSync() 方法将文件读取到内存中
+    const fileData = fs.readFileSync(localFile)
+
     //file
-    resumeUploader.putFile(uploadToken, null, putExtra,localFile, function (
+    resumeUploader.putFile(uploadToken, null, putExtra,fileData, function (
       respErr,
       respBody,
       respInfo
@@ -637,7 +641,6 @@ router.post('/upload', async (req, res) => {
         res.send({respInfo:respInfo.statusCode,respBody:respBody})
       }
     })
-    res.send({message:"提交成功",data:req.body})
   } catch (error) {
     res.status(500).send(error.message);
   }finally {
