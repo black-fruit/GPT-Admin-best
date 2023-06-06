@@ -603,10 +603,6 @@ onUnmounted(() => {
     controller.abort()
 })
 
-async function fupload(file: string): Promise<void> {
-  const { data } = await fetchUpload(file)
-  console.log(data)
-}
 
 async function handPhoto(): Promise<void> {
   // 唤起文件选择对话框，并等待用户完成文件选择
@@ -618,13 +614,11 @@ async function handPhoto(): Promise<void> {
     if (file) {
       // 显式地将参数类型转换为 File 类型
       const selectedFile = file as File
-      // 如果用户成功选择了文件，则将其读取为 Base64 编码的字符串并上传
-      const dataUrl = await new Promise<string>((resolve) => {
-        const reader = new FileReader()
-        reader.onload = () => resolve(reader.result as string)
-        reader.readAsDataURL(selectedFile)
-      })
-      await fupload(dataUrl)
+      // 如果用户成功选择了文件，则读取文件内容并上传
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+      const response = await fetchUpload(formData)
+      console.log(response)
     }
   })
 }
