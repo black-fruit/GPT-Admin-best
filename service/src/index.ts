@@ -606,21 +606,21 @@ router.post('/upload', async (req, res) => {
     const uploadToken = putPolicy.uploadToken(mac)
 
     const config = new qiniu.conf.Config()
-    const localFile = req.body
+    const localFile = `${req.body}`
     config.zone = qiniu.zone.Zone_z1
     config.useCdnDomain = true
 
     const resumeUploader = new qiniu.resume_up.ResumeUploader(config)
-    // const putExtra = new qiniu.resume_up.PutExtra()
-    // putExtra.params = {
-    //   // "x:name": "",
-    //   // "x:age": 27,
-    // }
-    // putExtra.fname = name
-    // // putExtra.resumeRecordFile = 'progress.log';
-    // putExtra.progressCallback = function (uploadBytes, totalBytes) {
-    //   console.log(`progress: ${uploadBytes * 100 / totalBytes}%`)
-    // }
+    const putExtra = new qiniu.resume_up.PutExtra()
+    putExtra.params = {
+      // "x:name": "",
+      // "x:age": 27,
+    }
+    putExtra.fname = name
+    // putExtra.resumeRecordFile = 'progress.log';
+    putExtra.progressCallback = function (uploadBytes, totalBytes) {
+      console.log(`progress: ${uploadBytes * 100 / totalBytes}%`)
+    }
     //file
     resumeUploader.putFile(uploadToken, null, localFile, function (
       respErr,
