@@ -580,7 +580,6 @@ router.post('/upload', async (req, res) => {
     const secretKey = 'sp1ZQOsSomQNVKjUwJWhXCP069m1BNkMQI3V1mxV'
 
     const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
-    res.send({message:"提交成功",data:mac})
     const name = req.body
 
     const saveJpgEntry = qiniu.util.urlsafeBase64Encode(`${bucket}:${name}`)
@@ -631,10 +630,9 @@ router.post('/upload', async (req, res) => {
         throw respErr
       }
       if (respInfo.statusCode == 200) {
-        console.log(respBody)
+        res.send(respBody)
       } else {
-        console.log(respInfo.statusCode)
-        console.log(respBody)
+        res.send({respInfo:respInfo.statusCode,respBody:respBody})
       }
     })
     res.send({message:"提交成功",data:req.body})
