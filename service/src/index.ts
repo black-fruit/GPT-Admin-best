@@ -580,7 +580,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     const bucket = 'ai-up'
     const accessKey = 'e5uCqg8a9uo6BeGtR_lHftsZ-oF_kQdYWrDpqkOR'
     const secretKey = 'sp1ZQOsSomQNVKjUwJWhXCP069m1BNkMQI3V1mxV'
-
+    const domain = 'rvrxrv6us.hn-bkt.clouddn.com'
     const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
     const name = file.originalname
 
@@ -619,7 +619,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
       if (respInfo.statusCode == 200) {
         // 删除本地临时文件并返回文件的访问URL
         fs.unlinkSync(file.path)
-        const url = `https://img.yrshuo.cn/${respBody.key}`
+        const url = `${domain}/${respBody.key}`
         res.send(url)
       } else {
         res.send({respInfo:respInfo.statusCode,respBody:respBody})
