@@ -592,15 +592,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
     const options: qiniu.rs.PutPolicyOptions = {
       scope: bucket,
-      expires: 7200,
-      returnBody:
-        '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}',
-      //将多个数据处理指令拼接起来
-      persistentOps: vframeJpgFop,
-      //数据处理队列名称，必填
-      persistentPipeline: 'img-pipe',
-      // //数据处理完成结果通知地址
-      // persistentNotifyUrl: "http://api.example.com/qiniu/pfop/notify",
+      expires: 7200
     }
 
     const putPolicy = new qiniu.rs.PutPolicy(options)
@@ -611,8 +603,8 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     config.zone = qiniu.zone.Zone_z2
     config.useCdnDomain = true
 
-    const formUploader = new qiniu.resume_up.FormUploader(config)
-    const putExtra = new qiniu.resume_up.PutExtra()
+    const formUploader = new qiniu.form_up.FormUploader(config);
+    const putExtra = new qiniu.form_up.PutExtra();
     // 构造上传文件的key（文件名）
     const key = `${bucket}:${name}`
     //file
