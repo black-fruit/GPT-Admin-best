@@ -576,6 +576,9 @@ router.post('/config', rootAuth, async (req, res) => {
 })
 router.post('/upload', async (req, res) => {
   try {
+    const file = req.file
+    res.send({file:file.path})
+    return
     const bucket = 'ai-up'
     const accessKey = 'e5uCqg8a9uo6BeGtR_lHftsZ-oF_kQdYWrDpqkOR'
     const secretKey = 'sp1ZQOsSomQNVKjUwJWhXCP069m1BNkMQI3V1mxV'
