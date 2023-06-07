@@ -577,10 +577,10 @@ router.post('/config', rootAuth, async (req, res) => {
 router.post('/upload', upload.single('file'), async (req, res) => {
   try {
     const file = req.file
-    const bucket = 'ai-up'
+    const bucket = 'ai-upload'
     const accessKey = 'e5uCqg8a9uo6BeGtR_lHftsZ-oF_kQdYWrDpqkOR'
     const secretKey = 'sp1ZQOsSomQNVKjUwJWhXCP069m1BNkMQI3V1mxV'
-    const domain = 'rvrxrv6us.hn-bkt.clouddn.com'
+    const domain = 'rvvnkduoy.hn-bkt.clouddn.com'
     const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
     const name = file.originalname
 
