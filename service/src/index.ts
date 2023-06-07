@@ -617,7 +617,10 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         throw respErr
       }
       if (respInfo.statusCode == 200) {
-        res.send(respBody)
+        // 删除本地临时文件并返回文件的访问URL
+        fs.unlinkSync(file.path)
+        const url = `http://${bucket}.${config.zone}/${respBody.key}`
+        res.send(url)
       } else {
         res.send({respInfo:respInfo.statusCode,respBody:respBody})
       }

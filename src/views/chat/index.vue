@@ -617,8 +617,12 @@ async function handPhoto(): Promise<void> {
       // 如果用户成功选择了文件，则读取文件内容并上传
       const formData = new FormData()
       formData.append('file', selectedFile)
-      const response = await fetchUpload(formData)
-      console.log(response)
+      try {
+        const response = await fetchUpload(formData)
+        console.log(response)
+      } catch (error) {
+        console.error(error)
+      }
     }
   })
 }
