@@ -613,17 +613,6 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
     const resumeUploader = new qiniu.resume_up.ResumeUploader(config)
     const putExtra = new qiniu.resume_up.PutExtra()
-    // 扩展参数
-    putExtra.params = {
-      "x:name": "",
-      "x:age": 27,
-    }
-    putExtra.fname = 'testfile.mp4';
-    // 如果指定了断点记录文件，那么下次会从指定的该文件尝试读取上次上传的进度，以实现断点续传
-    putExtra.resumeRecordFile = 'progress.log';
-    //分片上传可指定 version 字段，v2 表示分片上传 v2 , 可自定义分片大小，此处设为 6MB
-    putExtra.version = 'v2'
-    putExtra.partSize = 6 * 1024 * 1024
     // 构造上传文件的key（文件名）
     const key = `${Date.now()}-${file.originalname}`
     //file
