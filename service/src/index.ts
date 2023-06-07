@@ -606,7 +606,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     const formUploader = new qiniu.form_up.FormUploader(config);
     const putExtra = new qiniu.form_up.PutExtra();
     // 构造上传文件的key（文件名）
-    const key = `${bucket}:${name}`
+    const key = `${bucket}/${name}`
     //file
     formUploader.putFile(uploadToken, key,localFile,putExtra, function (
       respErr,
@@ -619,7 +619,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
       if (respInfo.statusCode == 200) {
         // 删除本地临时文件并返回文件的访问URL
         fs.unlinkSync(file.path)
-        const url = `http://${bucket}.${config.zone}/${respBody.key}`
+        const url = `http://${bucket}.up-z2.qiniup.com/${respBody.key}`
         res.send(url)
       } else {
         res.send({respInfo:respInfo.statusCode,respBody:respBody})
