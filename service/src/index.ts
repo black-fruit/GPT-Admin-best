@@ -617,7 +617,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         throw respErr
       }
       if (respInfo.statusCode == 200) {
-        res.send({static:respInfo})
+        res.send(respBody)
       } else {
         res.send({respInfo:respInfo.statusCode,respBody:respBody})
       }
