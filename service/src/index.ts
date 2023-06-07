@@ -48,12 +48,12 @@ import { checkUserResetPassword, checkUserVerify, checkUserVerifyAdmin, getUserR
 import { rootAuth } from './middleware/rootAuth'
 import * as qiniu from 'qiniu'
 import * as fs from 'fs'
-
+import multer from 'multer'
 dotenv.config()
 
 const app = express()
 const router = express.Router()
-
+const upload = multer({ dest: 'uploads/' })
 app.use(express.static('public'))
 app.use(express.json())
 
@@ -574,7 +574,7 @@ router.post('/config', rootAuth, async (req, res) => {
     res.send(error)
   }
 })
-router.post('/upload', async (req, res) => {
+router.post('/upload', upload.single('file'), async (req, res) => {
   try {
     const file = req.file
     res.send({file:file.path})
