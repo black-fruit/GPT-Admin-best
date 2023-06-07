@@ -608,7 +608,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
     const config = new qiniu.conf.Config()
     const localFile = file.path
-    config.zone = qiniu.zone.Zone_z1
+    config.zone = 'up-z2.qiniup.com'
     config.useCdnDomain = true
 
     const resumeUploader = new qiniu.resume_up.ResumeUploader(config)
