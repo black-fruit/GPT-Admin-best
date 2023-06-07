@@ -575,17 +575,14 @@ router.post('/config', rootAuth, async (req, res) => {
   }
 })
 router.post('/upload', upload.single('file'), async (req, res) => {
-  const file = req.file
-  res.send({file:file})
-  return;
   try {
-    
+    const file = req.file
     const bucket = 'ai-up'
     const accessKey = 'e5uCqg8a9uo6BeGtR_lHftsZ-oF_kQdYWrDpqkOR'
     const secretKey = 'sp1ZQOsSomQNVKjUwJWhXCP069m1BNkMQI3V1mxV'
 
     const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
-    const name = file.path
+    const name = file.originalname
 
     const saveJpgEntry = qiniu.util.urlsafeBase64Encode(`${bucket}:${name}`)
     const fops =
@@ -627,11 +624,10 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     //分片上传可指定 version 字段，v2 表示分片上传 v2 , 可自定义分片大小，此处设为 6MB
     putExtra.version = 'v2'
     putExtra.partSize = 6 * 1024 * 1024
-    // 使用 fs.readFileSync() 方法将文件读取到内存中
-    const fileData = fs.readFileSync(localFile)
-
+    // 构造上传文件的key（文件名）
+    const key = `${Date.now()}-${file.originalname}`
     //file
-    resumeUploader.putFile(uploadToken, null, putExtra,fileData, function (
+    resumeUploader.putFile(uploadToken, key,localFile,putExtra, function (
       respErr,
       respBody,
       respInfo
