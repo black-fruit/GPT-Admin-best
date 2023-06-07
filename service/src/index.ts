@@ -611,12 +611,12 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     config.zone = qiniu.zone.Zone_z2
     config.useCdnDomain = true
 
-    const resumeUploader = new qiniu.resume_up.ResumeUploader(config)
+    const formUploader = new qiniu.resume_up.FormUploader(config)
     const putExtra = new qiniu.resume_up.PutExtra()
     // 构造上传文件的key（文件名）
-    const key = `${Date.now()}-${file.originalname}`
+    const key = `${bucket}:${name}`
     //file
-    resumeUploader.putFile(uploadToken, key,localFile,putExtra, function (
+    formUploader.putFile(uploadToken, key,localFile,putExtra, function (
       respErr,
       respBody,
       respInfo
