@@ -577,14 +577,12 @@ router.post('/config', rootAuth, async (req, res) => {
 router.post('/upload', upload.single('file'), async (req, res) => {
   try {
     const file = req.file
-    res.send({file:file.path})
-    return
     const bucket = 'ai-up'
     const accessKey = 'e5uCqg8a9uo6BeGtR_lHftsZ-oF_kQdYWrDpqkOR'
     const secretKey = 'sp1ZQOsSomQNVKjUwJWhXCP069m1BNkMQI3V1mxV'
 
     const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
-    const name = `${req.body}`
+    const name = file.path
 
     const saveJpgEntry = qiniu.util.urlsafeBase64Encode(`${bucket}:${name}`)
     const fops =
@@ -609,7 +607,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     const uploadToken = putPolicy.uploadToken(mac)
 
     const config = new qiniu.conf.Config()
-    const localFile = `${req.body}`
+    const localFile = file.path
     config.zone = qiniu.zone.Zone_z1
     config.useCdnDomain = true
 
