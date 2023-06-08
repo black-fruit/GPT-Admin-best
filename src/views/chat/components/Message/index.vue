@@ -183,7 +183,7 @@ async function handlePreviousResponse(next: number) {
         <NImage
           width="100px"
           :inversion="inversion"
-          :src="text"
+          src="http://rvvnkduoy.hn-bkt.clouddn.com/ai-upload-9EFBC195-C09D-430A-8D51-0A7E061CD2B8.png"
          />
         <div class="flex flex-col">
           <button
