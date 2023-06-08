@@ -182,6 +182,7 @@ async function handlePreviousResponse(next: number) {
         />
         <NImage
           width="100px"
+          :inversion="inversion"
           :src="text"
          />
         <div class="flex flex-col">
