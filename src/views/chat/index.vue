@@ -75,7 +75,7 @@ function handleSubmit() {
 
 async function onConversation() {
   let message = prompt.value
-
+  console.log(message);
   if (loading.value)
     return
 
