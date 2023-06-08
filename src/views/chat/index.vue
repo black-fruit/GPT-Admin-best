@@ -75,7 +75,6 @@ function handleSubmit() {
 
 async function onConversation() {
   let message = prompt.value
-  console.log(message);
   if (loading.value)
     return
 
@@ -98,7 +97,7 @@ async function onConversation() {
     },
   )
   scrollToBottom()
-
+  return
   loading.value = true
   prompt.value = ''
 
