@@ -97,7 +97,6 @@ async function onConversation() {
     },
   )
   scrollToBottom()
-  return
   loading.value = true
   prompt.value = ''
 
@@ -618,6 +617,19 @@ async function handPhoto(): Promise<void> {
       formData.append('file', selectedFile)
       try {
         const response = await fetchUpload(formData)
+        const chatUuid = Date.now()
+          addChat(
+            +uuid,
+            {
+              uuid: chatUuid,
+              dateTime: new Date().toLocaleString(),
+              text: response.toString(),
+              inversion: true,
+              error: false,
+              conversationOptions: null,
+              requestOptions: { prompt: response.toString(), options: null },
+            },
+          )
         console.log(response)
       } catch (error) {
         console.error(error)
