@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue'
-import { NButtonGroup, NDropdown, NPopover, NSpace, useMessage } from 'naive-ui'
+import { NButtonGroup, NDropdown, NPopover, NSpace,NImage, useMessage } from 'naive-ui'
 import AvatarComponent from './Avatar.vue'
 import TextComponent from './Text.vue'
 import { SvgIcon } from '@/components/common'
@@ -180,6 +180,10 @@ async function handlePreviousResponse(next: number) {
           :loading="loading"
           :as-raw-text="asRawText"
         />
+        <NImage
+          width="100px"
+          :src="text"
+         />
         <div class="flex flex-col">
           <button
             v-if="!inversion"
