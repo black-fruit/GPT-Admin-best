@@ -13,6 +13,7 @@ interface Props {
   dateTime?: string
   text?: string
   inversion?: boolean
+  isurl:boolean
   error?: boolean
   loading?: boolean
   responseCount?: number

@@ -52,7 +52,6 @@ const loading = ref<boolean>(false)
 const inputRef = ref<Ref | null>(null)
 const photoInput = ref<HTMLInputElement | null>(null)
 const showPrompt = ref(false)
-let isurl = false
 let loadingms: MessageReactive
 let allmsg: MessageReactive
 let prevScrollTop: number
@@ -86,12 +85,12 @@ async function onConversation() {
   const chatUuid = Date.now()
   addChat(
     +uuid,
-    isurl,
     {
       uuid: chatUuid,
       dateTime: new Date().toLocaleString(),
       text: message,
       inversion: true,
+      isurl:false,
       error: false,
       conversationOptions: null,
       requestOptions: { prompt: message, options: null },
@@ -109,13 +108,13 @@ async function onConversation() {
 
   addChat(
     +uuid,
-    isurl,
     {
       uuid: chatUuid,
       dateTime: new Date().toLocaleString(),
       text: '',
       loading: true,
       inversion: false,
+      isurl:false,
       error: false,
       conversationOptions: null,
       requestOptions: { prompt: message, options: { ...options } },
@@ -158,6 +157,7 @@ async function onConversation() {
                 dateTime: new Date().toLocaleString(),
                 text: lastText + (data.text ?? ''),
                 inversion: false,
+                isurl:false,
                 error: false,
                 loading: true,
                 conversationOptions: { conversationId: data.conversationId, parentMessageId: data.id },
@@ -222,6 +222,7 @@ async function onConversation() {
         dateTime: new Date().toLocaleString(),
         text: errorMessage,
         inversion: false,
+        isurl:false,
         error: true,
         loading: false,
         conversationOptions: null,
@@ -261,6 +262,7 @@ async function onRegenerate(index: number) {
       dateTime: new Date().toLocaleString(),
       text: '',
       inversion: false,
+      isurl:false,
       responseCount,
       error: false,
       loading: true,
@@ -305,6 +307,7 @@ async function onRegenerate(index: number) {
                 dateTime: new Date().toLocaleString(),
                 text: lastText + (data.text ?? ''),
                 inversion: false,
+                isurl:false,
                 responseCount,
                 error: false,
                 loading: true,
@@ -351,6 +354,7 @@ async function onRegenerate(index: number) {
         dateTime: new Date().toLocaleString(),
         text: errorMessage,
         inversion: false,
+        isurl:false,
         responseCount,
         error: true,
         loading: false,
@@ -373,6 +377,7 @@ async function onResponseHistory(index: number, historyIndex: number) {
       dateTime: chat.dateTime,
       text: chat.text,
       inversion: false,
+      isurl:false,
       responseCount: chat.responseCount,
       error: true,
       loading: false,
@@ -620,15 +625,14 @@ async function handPhoto(): Promise<void> {
       try {
         const response = await fetchUpload(formData)
         const chatUuid = Date.now()
-        isurl = true;
           addChat(
             +uuid,
-            isurl,
             {
               uuid: chatUuid,
               dateTime: new Date().toLocaleString(),
               text: response.toString(),
               inversion: true,
+              isurl:true,
               error: false,
               conversationOptions: null,
               requestOptions: { prompt: response.toString(), options: null },
