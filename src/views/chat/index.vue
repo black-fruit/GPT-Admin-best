@@ -52,7 +52,7 @@ const loading = ref<boolean>(false)
 const inputRef = ref<Ref | null>(null)
 const photoInput = ref<HTMLInputElement | null>(null)
 const showPrompt = ref(false)
-
+let isurl = false
 let loadingms: MessageReactive
 let allmsg: MessageReactive
 let prevScrollTop: number
@@ -86,6 +86,7 @@ async function onConversation() {
   const chatUuid = Date.now()
   addChat(
     +uuid,
+    isurl,
     {
       uuid: chatUuid,
       dateTime: new Date().toLocaleString(),
@@ -108,6 +109,7 @@ async function onConversation() {
 
   addChat(
     +uuid,
+    isurl,
     {
       uuid: chatUuid,
       dateTime: new Date().toLocaleString(),
@@ -618,8 +620,10 @@ async function handPhoto(): Promise<void> {
       try {
         const response = await fetchUpload(formData)
         const chatUuid = Date.now()
+        isurl = true;
           addChat(
             +uuid,
+            isurl,
             {
               uuid: chatUuid,
               dateTime: new Date().toLocaleString(),
