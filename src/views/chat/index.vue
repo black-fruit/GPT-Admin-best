@@ -676,7 +676,6 @@ async function handPhoto(): Promise<void> {
                   v-for="(item, index) of dataSources"
                   :key="index"
                   :date-time="item.dateTime"
-                  :text="item.text"
                   :inversion="item.inversion"
                   :response-count="item.responseCount"
                   :usage="item && item.usage || undefined"
@@ -685,6 +684,8 @@ async function handPhoto(): Promise<void> {
                   @regenerate="onRegenerate(index)"
                   @delete="handleDelete(index)"
                   @response-history="(ev) => onResponseHistory(index, ev)"
+                  :src="item.isurl ? item.src : undefined"
+                  :text="!item.isurl ? item.text : undefined"
                 />
                 <div class="sticky bottom-0 left-0 flex justify-center">
                   <NButton v-if="loading" type="warning" @click="handleStop">
