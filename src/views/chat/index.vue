@@ -677,6 +677,7 @@ async function handPhoto(): Promise<void> {
                   :key="index"
                   :date-time="item.dateTime"
                   :inversion="item.inversion"
+                  :isurl="item.isurl"
                   :response-count="item.responseCount"
                   :usage="item && item.usage || undefined"
                   :error="item.error"
