@@ -684,7 +684,6 @@ async function handPhoto(): Promise<void> {
                   @regenerate="onRegenerate(index)"
                   @delete="handleDelete(index)"
                   @response-history="(ev) => onResponseHistory(index, ev)"
-                  :src="item.isurl ? item.src : undefined"
                   :text="!item.isurl ? item.text : undefined"
                 />
                 <div class="sticky bottom-0 left-0 flex justify-center">
