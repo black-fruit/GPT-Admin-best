@@ -685,7 +685,7 @@ async function handPhoto(): Promise<void> {
                   @regenerate="onRegenerate(index)"
                   @delete="handleDelete(index)"
                   @response-history="(ev) => onResponseHistory(index, ev)"
-                  :text="!item.isurl ? item.text : undefined"
+                  :text="!item.isurl ? item.text : true"
                 />
                 <div class="sticky bottom-0 left-0 flex justify-center">
                   <NButton v-if="loading" type="warning" @click="handleStop">
