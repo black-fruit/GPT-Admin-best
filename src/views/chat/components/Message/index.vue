@@ -173,8 +173,7 @@ async function handlePreviousResponse(next: number) {
         class="flex items-end gap-1 mt-2"
         :class="[inversion ? 'flex-row-reverse' : 'flex-row']"
       >
-        <div v-show="isurl&&!inversion">
-          <TextComponent
+        <TextComponent
           ref="textRef"
           :inversion="inversion"
           :isurl="isurl"
@@ -183,7 +182,6 @@ async function handlePreviousResponse(next: number) {
           :loading="loading"
           :as-raw-text="asRawText"
         />
-        </div>
         <div v-show="isurl&&inversion">
           <NImage
           object-fit="contain"
