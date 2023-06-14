@@ -671,6 +671,7 @@ async function handPhoto(): Promise<void> {
               </div>
             </template>
             <template v-else>
+              
               <div>
                 <Message
                   v-for="(item, index) of dataSources"
