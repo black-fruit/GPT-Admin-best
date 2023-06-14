@@ -9,6 +9,7 @@ import { t } from '@/locales'
 import { copyToClip } from '@/utils/copy'
 
 interface Props {
+  isurl?:boolean
   inversion?: boolean
   error?: boolean
   text?: string
