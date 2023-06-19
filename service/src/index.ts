@@ -577,7 +577,7 @@ router.post('/config', rootAuth, async (req, res) => {
 router.post('/upload', upload.single('file'), async (req, res) => {
   try {
     const file = req.file
-    const bucket = 'ai-upload'
+    const bucket = 'aixxzs'
     const accessKey = 'e5uCqg8a9uo6BeGtR_lHftsZ-oF_kQdYWrDpqkOR'
     const secretKey = 'sp1ZQOsSomQNVKjUwJWhXCP069m1BNkMQI3V1mxV'
     const domain = 'aixxzs.cn'
