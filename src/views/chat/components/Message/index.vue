@@ -191,7 +191,7 @@ async function handlePreviousResponse(next: number) {
           :text="text"
           :loading="loading"
           :as-raw-text="asRawText"
-          :src="`${baseUrl}/${text}`"
+          :src="text"
          />
         <div class="flex flex-col">
           <button
