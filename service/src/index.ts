@@ -600,7 +600,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
     const config = new qiniu.conf.Config()
     const localFile = file.path
-    config.zone = qiniu.zone.Zone_z2
+    config.zone = qiniu.zone.Zone_na0
     config.useCdnDomain = true
 
     const formUploader = new qiniu.form_up.FormUploader(config);
