@@ -188,9 +188,6 @@ async function handlePreviousResponse(next: number) {
           :inversion="inversion"
           :isurl="isurl"
           :error="error"
-          :text="text"
-          :loading="loading"
-          :as-raw-text="asRawText"
           :src="text"
          />
         <div class="flex flex-col">

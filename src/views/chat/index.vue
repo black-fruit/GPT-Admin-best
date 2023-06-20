@@ -638,7 +638,7 @@ async function handPhoto(): Promise<void> {
               requestOptions: { prompt: response.toString(), options: null },
             },
           )
-        console.log(response)
+        console.log('URL地址：',response.toString())
       } catch (error) {
         console.error(error)
       }
