@@ -630,7 +630,7 @@ async function handPhoto(): Promise<void> {
             {
               uuid: chatUuid,
               dateTime: new Date().toLocaleString(),
-              text: response.toString(),
+              text: 'https://www.baidu.com',
               inversion: true,
               isurl:true,
               error: false,
