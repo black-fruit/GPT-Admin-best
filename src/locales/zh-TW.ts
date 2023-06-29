@@ -81,6 +81,7 @@ export default {
     mailConfig: '邮箱配置',
     auditConfig: '敏感词审核',
     avatarLink: '頭貼連結',
+    ChatGroup: '交流群組',
     name: '名稱',
     description: '描述',
     role: '角色設定',
