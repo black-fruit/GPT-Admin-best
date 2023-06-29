@@ -142,9 +142,9 @@ function handleImportButtonClick(): void {
       <div class="flex items-center space-x-4">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.ChatGroup') }}</span>
         <div class="flex-1">
-          <NButton type="primary" @click="window.location.href = '/404'">
+          <a href="/404"><NButton type="primary">
       Click Me / 点击我
-    </NButton>
+    </NButton></a>
         </div>
       </div>
       <div class="flex items-center space-x-4">
