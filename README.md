@@ -21,6 +21,14 @@
 
 [✓] 加入群组按钮
 
+[✓] 赠送V2Ray节点
+
+## 赠送V2Ray节点
+
+## 加入群组按钮
+
+在`/src/components/common/Setting/General.vue`第153行修改 `vmess://ewoidiI6ICIyIiwKInBzIjogIjIzM3YyLmNvbV8xNzIuMTc0LjQ5LjEzNSIsCiJhZGQiOiAiMTcyLjE3NC40OS4xMzUiLAoicG9ydCI6ICI4MDgwIiwKImlkIjogImFhYzdiMzI1LTQ5M2EtNDVhNy1iMGQxLWY2ODNkMmRiMjVkZCIsCiJhaWQiOiAiMCIsCiJuZXQiOiAia2NwIiwKInR5cGUiOiAiZHRscyIsCiJob3N0IjogIiIsCiJwYXRoIjogIiIsCiJ0bHMiOiAiIgp9Cg==` 改为你的vmess链接
+
 ## 加入群组按钮
 
 在`/src/components/common/Setting/General.vue`第144行修改 `/404` 改为你的群组链接

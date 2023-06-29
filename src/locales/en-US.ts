@@ -82,6 +82,7 @@ export default {
     auditConfig: 'Audit Config',
     avatarLink: 'Avatar Link',
     ChatGroup: 'Chat Group',
+    FreeV2Ray: 'V2Ray vmess',
     name: 'Name',
     description: 'Description',
     temperature: 'Temperature',

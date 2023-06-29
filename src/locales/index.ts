@@ -2,6 +2,7 @@ import type { App } from 'vue'
 import { createI18n } from 'vue-i18n'
 import enUS from './en-US'
 import zhCN from './zh-CN'
+import jaJP from './ja-JP'
 import zhTW from './zh-TW'
 import koKR from './ko-KR'
 import { useAppStoreWithOut } from '@/store/modules/app'
@@ -20,6 +21,7 @@ const i18n = createI18n({
     'zh-CN': zhCN,
     'zh-TW': zhTW,
     'ko-KR': koKR,
+    'ja-JP': jaJP,
   },
 })
 

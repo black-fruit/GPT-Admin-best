@@ -59,6 +59,7 @@ const languageOptions: { label: string; key: Language; value: Language }[] = [
   { label: '繁體中文', key: 'zh-TW', value: 'zh-TW' },
   { label: 'English', key: 'en-US', value: 'en-US' },
   { label: '한국어', key: 'ko-KR', value: 'ko-KR' },
+  { label: '日本语', key: 'ja-JP', value: 'ja-JP'},
 ]
 
 async function updateUserInfo(options: Partial<UserInfo>) {
@@ -142,8 +143,18 @@ function handleImportButtonClick(): void {
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.ChatGroup') }}</span>
         <div class="flex-1">
           <NButton type="primary" @click="$router.push('/404')">
-      Click Me
+      Click Me / 点击我
     </NButton>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="flex-shrink-0 w-[100px]">{{ $t('setting.FreeV2Ray') }}</span>
+        <div class="flex-1">
+            <a>vmess://ewoidiI6ICIyIiwKInBzIjogIjIzM3YyLmNvbV8xNzIuMTc0LjQ5LjEzNSIsCiJhZGQiOiAiMTcyLjE3NC40OS4xMzUiLAoicG9ydCI6ICI4MDgwIiwKImlkIjogImFhYzdiMzI1LTQ5M2EtNDVhNy1iMGQxLWY2ODNkMmRiMjVkZCIsCiJhaWQiOiAiMCIsCiJuZXQiOiAia2NwIiwKInR5cGUiOiAiZHRscyIsCiJob3N0IjogIiIsCiJwYXRoIjogIiIsCiJ0bHMiOiAiIgp9Cg==</a><pre><a>     </a></pre><NButton type="primary" @click="$router.push('https://github.com/2dust/v2rayN')">
+      Download APP / 安装应用程式
+    </NButton>
+          
+    
         </div>
       </div>
       <div

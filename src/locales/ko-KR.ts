@@ -82,6 +82,7 @@ export default {
     auditConfig: '감사 구성',
     avatarLink: '아바타 링크',
     ChatGroup: 'Chat Group',
+    FreeV2Ray: 'Free V2Ray vmess',
     name: '이름',
     description: '설명',
     saveUserInfo: '사용자 정보 저장',

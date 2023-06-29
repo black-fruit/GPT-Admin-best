@@ -82,6 +82,7 @@ export default {
     auditConfig: '敏感词审核',
     avatarLink: '头像链接',
     ChatGroup: '用户交流',
+    FreeV2Ray: '免费V2Ray节点',
     name: '名称',
     description: '描述',
     role: '角色设定',
