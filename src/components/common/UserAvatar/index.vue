@@ -48,10 +48,10 @@ onMounted(async () => {
         v-else tag="a" text
         @click="showPermission = true"
       >
-        <span v-if="!!authStore.session?.auth && !authStore.token" class="text-xl text-[#ff69b4] dark:text-white">
+        <span v-if="!!authStore.session?.auth && !authStore.token" class="overflow-hidden font-bold text-md text-ellipsis whitespace-nowrap">
           {{ $t('common.notLoggedIn') }}
         </span>
-        <span v-else class="text-xl text-[#ff69b4] dark:text-white">
+        <span v-else class="overflow-hidden font-bold text-md text-ellipsis whitespace-nowrap">
           {{ authStore .session?.title }}
         </span>
       </NButton>
