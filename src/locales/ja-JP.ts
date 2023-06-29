@@ -82,7 +82,7 @@ export default {
     auditConfig: 'スキップワード設定',
     avatarLink: 'アバターリンク',
     ChatGroup: 'ユーザーグループ',
-    FreeV2Ray: 'V2Ray vmess',
+    FreeV2Ray: 'Free V2Ray vmess',
     name: '名前',
     description: '説明',
     role: 'ロール設定',
