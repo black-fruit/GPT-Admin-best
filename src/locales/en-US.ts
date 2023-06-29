@@ -81,6 +81,7 @@ export default {
     mailConfig: 'Mail Config',
     auditConfig: 'Audit Config',
     avatarLink: 'Avatar Link',
+    ChatGroup: 'Chat Group',
     name: 'Name',
     description: 'Description',
     temperature: 'Temperature',
