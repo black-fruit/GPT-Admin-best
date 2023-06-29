@@ -138,6 +138,14 @@ function handleImportButtonClick(): void {
           <NInput v-model:value="avatar" placeholder="" />
         </div>
       </div>
+      <div class="flex items-center space-x-4">
+        <span class="flex-shrink-0 w-[100px]">{{ $t('setting.ChatGroup') }}</span>
+        <div class="flex-1">
+          <NButton type="primary" @click="$router.push('/404')">
+      Click Me
+    </NButton>
+        </div>
+      </div>
       <div
         class="flex items-center space-x-4"
         :class="isMobile && 'items-start'"
