@@ -225,6 +225,9 @@ function handleImportButtonClick(): void {
           {{ $t('common.save') }}
         </NButton>
       </div>
+			<div class="flex items-center space-x-4">
+				<a href="https://github.com/black-fruit/GPT-Admin-best">This project is open source, no resale / 本项目全开源，禁止倒卖，项目地址（Project Address） https://github.com/black-fruit/GPT-Admin-best</a>
+			</div>
     </div>
   </div>
 </template>
