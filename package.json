@@ -11,6 +11,8 @@
     "vue"
   ],
   "scripts": {
+    "pnpm bootstrap": "pnpm install && pnpm run common:prepare",
+    "pnpm dev": "pnpm run dev",
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
@@ -18,7 +20,6 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "bootstrap": "pnpm install && pnpm run common:prepare",
     "common:cleanup": "rimraf node_modules && rimraf pnpm-lock.yaml",
     "common:prepare": "husky install"
   },
